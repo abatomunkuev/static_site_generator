@@ -209,7 +209,12 @@ def determine_path(parsed_args):
     # Check if the path is a directory   
     elif (os.path.isdir(path)):
         path_obj['dir_path'] = path
-        path_obj['file_names'] = [f for f in os.listdir(path)]
+        filenames = []
+        # Read only files which ends with .txt 
+        for file in os.listdir(path):
+            if (file.endswith(".txt")):
+                filenames.append(file)
+        path_obj['file_names'] = filenames
     else:
         raise ValueError("Please, provide the correct path to the file or directory")
 
