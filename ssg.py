@@ -1,6 +1,8 @@
 import argparse
 import os
 import shutil
+from bs4 import BeautifulSoup
+from io import open
 
 OUTPUT_DIR = "dist"
 
@@ -83,7 +85,7 @@ class TextFile:
         html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=splitted_content[0]))
         # handle the rest of the content, wrapping it up in <p> tag
         for paragraph in splitted_content[1:]:
-            html_p.append("<p>{content}</p>".format(content=paragraph))
+            html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf-8')))
         processed_content = {
             "title": splitted_content[0],
             "content": html_p,
@@ -128,8 +130,10 @@ class TextFile:
         file_name = "_".join([str.lower(name) for name in self.file_path.split("/")[-1].split(".")[0].split(" ")]) + ".html"
         link_name = " ".join([name for name in self.file_path.split("/")[-1].split(".")[0].split(" ")])
         path = os.path.join(OUTPUT_DIR,file_name)
-        html_file = open(path, 'w')
-        html_file.write(template)
+        html_file = open(path, 'w', encoding='utf-8')
+        # Pretty HTML file 
+        soup = BeautifulSoup(template, 'html.parser')
+        html_file.write(soup.prettify())
         html_file.close()
         
         return (path.split("/")[-1],link_name)
@@ -172,7 +176,9 @@ def generate_index_html(stylesheet, links):
     template = template.format(title="Static Site Generator", style_sheet=stylesheet_index, links="<br>".join(links_a))
     path = os.path.join(OUTPUT_DIR,"index.html")
     html_file = open(path, 'w')
-    html_file.write(template)
+    # Pretty HTML file 
+    soup = BeautifulSoup(template, 'html.parser')
+    html_file.write(soup.prettify())
     html_file.close()
     
 
