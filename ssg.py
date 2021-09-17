@@ -133,8 +133,11 @@ class TextFile:
         soup = BeautifulSoup(template, 'html.parser')
         html_file.write(soup.prettify())
         html_file.close()
-        
-        return (path.split("/")[-1],link_name)
+        if platform.system() == "Windows":
+            path = path.split("\\")[-1]
+        else:
+            path = path.split("/")[-1]
+        return (path,link_name)
         
 
 
