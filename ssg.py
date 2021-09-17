@@ -80,7 +80,12 @@ class TextFile:
         html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=splitted_content[0]))
         # handle the rest of the content, wrapping it up in <p> tag
         for paragraph in splitted_content[1:]:
-            html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf8')))
+            # Handle encoding for windows
+            if platform.system() == "Windows":
+                html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf8').decode('utf8')))
+            # Handle encoding for Mac and other platforms
+            else:
+                html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf8')))
         processed_content = {
             "title": splitted_content[0],
             "content": html_p,
