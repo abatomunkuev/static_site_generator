@@ -3,6 +3,7 @@ import os
 import shutil
 from bs4 import BeautifulSoup
 from io import open
+import platform
 
 OUTPUT_DIR = "dist"
 
@@ -10,7 +11,6 @@ class TextFile:
     def __init__(self, file_path, dir_path, stylesheet=None):
         """
         Built-in method to initialize an instace of the TextFile class
-
         Parameters
         ----------
         self : Object (class File) 
@@ -27,7 +27,6 @@ class TextFile:
     def get_path(self):
         """
         Method returns an absolute path to the file
-
         Parameters
         ----------
         self : Object (class File) 
@@ -43,12 +42,10 @@ class TextFile:
     def read_file(self):
         """
         Method reads a file that needs to be processed to HTML page
-
         Parameters
         ----------
         self : Object (class File) 
             reference to the current instance of the class (TextFile)
-
         Returns
         ------- 
         content : Array(str)
@@ -57,7 +54,7 @@ class TextFile:
         # Get path
         file_path = self.get_path()
         # Open a file
-        file = open(file_path, mode='r')
+        file = open(file_path, mode='r', encoding='utf8')
         # Read all lines at once 
         contents = file.read()
         file.close()
@@ -66,12 +63,10 @@ class TextFile:
     def process_file(self):
         """
         Method process the contents of the file
-
         Paramerers
         ----------
         self : Object (class File) 
             reference to the current instance of the class (TextFile)
-
         Returns
         -------
         processed_content : Dictionary
@@ -85,7 +80,7 @@ class TextFile:
         html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=splitted_content[0]))
         # handle the rest of the content, wrapping it up in <p> tag
         for paragraph in splitted_content[1:]:
-            html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf-8')))
+            html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf8')))
         processed_content = {
             "title": splitted_content[0],
             "content": html_p,
@@ -97,12 +92,10 @@ class TextFile:
     def generate_html(self):
         """
         Method generates an HTML file from the processed content
-
         Paramerers
         ----------
         self : Object (class File) 
             reference to the current instance of the class (TextFile)
-
         Returns
         -------
         path : String 
@@ -130,7 +123,7 @@ class TextFile:
         file_name = "_".join([str.lower(name) for name in self.file_path.split("/")[-1].split(".")[0].split(" ")]) + ".html"
         link_name = " ".join([name for name in self.file_path.split("/")[-1].split(".")[0].split(" ")])
         path = os.path.join(OUTPUT_DIR,file_name)
-        html_file = open(path, 'w', encoding='utf-8')
+        html_file = open(path, 'w', encoding='utf8')
         # Pretty HTML file 
         soup = BeautifulSoup(template, 'html.parser')
         html_file.write(soup.prettify())
@@ -144,7 +137,6 @@ class TextFile:
 def generate_index_html(stylesheet, links):
     """
     Function generates index.html file, containing the links to the generated pages. 
-
     Parameters 
     ----------
     stylesheet : String 
@@ -185,12 +177,10 @@ def generate_index_html(stylesheet, links):
 def determine_path(parsed_args):
     """
     Function determines the path to the file or directory
-
     Parameters
     ----------
     parsed_args : ArgumentParser(obj)
         ArgumentParser object containing parsed arguments.
-
     Returns
     -------
     path_obj : Dictionary
@@ -223,7 +213,6 @@ def cla_parser():
     Function parses command line arguments.
     Parameters
     ----------
-
     Returns
     ------
     Python dictionary containing all the necessary information (

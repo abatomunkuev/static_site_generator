@@ -31,6 +31,6 @@ pip install beautifulsoup4
 | `--version` | `--v` | 
 | `--stylesheet` | `--s`| 
 
-# Live version 
+# Live version
 
 https://abatomunkuev.github.io/static_site_generator/
