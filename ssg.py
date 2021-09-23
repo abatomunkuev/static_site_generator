@@ -125,7 +125,7 @@ class TextFile:
                     content_title = content[1:]
                     html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=content_title))
                 elif (reg_h2.match(content)):
-                    html_p.append("<h2 style='text-align: center; margin-bottom: 15px'>{subtitle}</h1>".format(subtitle=content[2:]))
+                    html_p.append("<h2 style='text-align: center; margin-bottom: 15px'>{subtitle}</h2>".format(subtitle=content[2:]))
                 else:
                     # Handle encoding for windows
                     if platform.system() == "Windows":
