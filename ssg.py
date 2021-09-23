@@ -98,6 +98,7 @@ class TextFile:
             html_p=[]
             content_title = ""
             for content in splitted_content:
+                # regex for .md syntax
                 reg_h1 = re.compile('^# .+')
                 reg_h2 = re.compile('^## .+')
                 reg_italic = re.compile('[^\*]\*[^\*]+\*[^\*]')
@@ -119,6 +120,7 @@ class TextFile:
                         new_phrase = new_phrase.replace("**", "</b>")
                         content = content.replace(phrase, new_phrase, 1)
 
+                # Handling Headers
                 if (reg_h1.match(content)):
                     content_title = content[1:]
                     html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=content_title))
@@ -254,7 +256,7 @@ def determine_path(parsed_args):
     elif (os.path.isdir(path)):
         path_obj['dir_path'] = path
         filenames = []
-        # Read only files which ends with .txt 
+        # Read only files which ends with .txt or .md
         for file in os.listdir(path):
             if (file.endswith(".txt") or file.endswith(".md")):
                 filenames.append(file)
