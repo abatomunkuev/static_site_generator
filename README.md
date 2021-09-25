@@ -1,5 +1,5 @@
 # Static Site Generator SSG
-Static Site Generator (SSG) - a tool for generating a complete HTML files from raw data like txt files. This tool was made with Python language. 
+Static Site Generator (SSG) - a tool for generating a complete HTML files from raw data like txt and md files. This tool was made with Python language. 
 
 ## Prerequisites
 - Python3
@@ -12,7 +12,13 @@ pip install beautifulsoup4
 
 ## Tool features 
 - CSS stylesheet support by specifying `--stylesheet` or `s`
-- Title parsing support. First line, indicates title followed by two blank lines. This will populate the `<title>...</title>` and add `<h1>...</h1>` to the top of the `<body>...</body>`.
+- Title parsing support for txt files. First line, indicates title followed by two blank lines. This will populate the `<title>...</title>` and add `<h1>...</h1>` to the top of the `<body>...</body>`.
+- Title parsing support for md files. Line starting with the Markup syntax \# indicates the title. This will populate the `<title>...</title>` and add `<h1>...</h1>` to the top of the `<body>...</body>`.
+- Header parsing support for md files. Lines starting with the Markup syntax \#\# or \#\#\# will be parsed with `<h2>...</h2>` and `<h3>...</h3>` tags respectively.
+- Italic syntax support for md files. Contents surrounded by Markup Syntax *\*italics\** will be parsed to html `<i>...</i>` tags.
+- Bold syntax support for md files. Contents surrounded by Markup Syntax **\*\*Bold\*\*** will be parsed to html `<b>...</b>` tags.
+- Bold and Italic syntax support for md files. Contents surrounded by Markup Syntax ***\*\*\*Bold Italcs \*\*\**** will be parsed with both italic and bold html tags.
+- Link syntax support for md files. Contents in Markup Syntax \[Link\]\(url\) will be parsed to html link tags with working links.
 - If users specifies a folder for the input, automatically generates an `index.html`, which has relative links to each of the generated files.
 
 ## Usage with shorthand flags
