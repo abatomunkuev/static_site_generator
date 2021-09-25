@@ -99,12 +99,17 @@ class TextFile:
             content_title = ""
             for content in splitted_content:
                 # regex for .md syntax
-                reg_h1 = re.compile('^# (.*$)')
-                reg_h2 = re.compile('^## (.*$)')
-                reg_h3 = re.compile('^### (.*$)')
+                reg_h1 = re.compile('[^#]*# (.*$)')
+                reg_h2 = '(^[^#])*## ([^#]+)*(.*$)'
+                reg_h3 = '(^[^#])*### ([^#]+)*(.*$)'
                 reg_italic = '[^\*]?\*([^\*]+)\*[^\*]?'
                 reg_bold = '[^\*]?\*{2}([^\*]+)\*{2}[^\*]?'
                 reg_link = '\[(.+)\]\((.+)\)'
+                reg_p = '(^[^#]*$)'
+                reg_newline = '\n'
+
+                # Handling newline
+                content = re.sub(reg_newline, '<br>', content)
 
                 # Handling italics and bold in italics
                 content = re.sub(reg_italic, r' <i>\1</i> ', re.sub(reg_bold, r' <b>\1</b> ', content))
@@ -116,20 +121,20 @@ class TextFile:
                 content = re.sub(reg_link, r'<a href="\2">\1</a>', content)
 
                 # Handling Headers and paragraphs
+                content = re.sub(reg_p, r'<p>\1</p>', content)
+                content = re.sub(reg_h2, r"\1<h2 style='text-align: center; margin-bottom: 15px'>\2</h2>\3", content)
+                content = re.sub(reg_h3, r"\1<h3 style='text-align: center; margin-bottom: 15px'>\2</h3>\3", content)
+
                 if (reg_h1.match(content)):
                     content_title = content[1:]
                     html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=content_title))
-                elif (reg_h2.match(content)):
-                    html_p.append("<h2 style='text-align: center; margin-bottom: 15px'>{subtitle}</h2>".format(subtitle=content[2:]))
-                elif (reg_h3.match(content)):
-                    html_p.append("<h3 style='text-align: center; margin-bottom: 15px'>{subtitle}</h3>".format(subtitle=content[3:]))
-                else:
+                else :
                     # Handle encoding for windows
                     if platform.system() == "Windows":
-                        html_p.append("<p>{content}</p>".format(content=content.encode('utf8').decode('utf8')))
+                        html_p.append("{content}".format(content=content.encode('utf8').decode('utf8')))
                     # Handle encoding for Mac and other platforms
                     else:
-                        html_p.append("<p>{content}</p>".format(content=content.encode('utf8')))
+                        html_p.append("{content}".format(content=content.encode('utf8')))
                         
             processed_content = {
                 "title": content_title,
