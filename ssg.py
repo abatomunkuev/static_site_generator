@@ -99,33 +99,30 @@ class TextFile:
             content_title = ""
             for content in splitted_content:
                 # regex for .md syntax
-                reg_h1 = re.compile('^# .+')
-                reg_h2 = re.compile('^## .+')
-                reg_italic = re.compile('[^\*]\*[^\*]+\*[^\*]')
-                reg_bold = re.compile('[^\*]?\*{2}[^\*]+\*{2}[^\*]?')
+                reg_h1 = re.compile('^# (.*$)')
+                reg_h2 = re.compile('^## (.*$)')
+                reg_h3 = re.compile('^### (.*$)')
+                reg_italic = '[^\*]?\*([^\*]+)\*[^\*]?'
+                reg_bold = '[^\*]?\*{2}([^\*]+)\*{2}[^\*]?'
+                reg_link = '\[(.+)\]\((.+)\)'
 
-                # Handling italics
-                result_italic = reg_italic.findall(content)
-                if (result_italic):
-                    for phrase in result_italic:
-                        new_phrase = phrase.replace("*", "<i>", 1)
-                        new_phrase = new_phrase.replace("*", "</i>")
-                        content = content.replace(phrase, new_phrase, 1)
+                # Handling italics and bold in italics
+                content = re.sub(reg_italic, r' <i>\1</i> ', re.sub(reg_bold, r' <b>\1</b> ', content))
 
-                # Handling bold
-                result_bold = reg_bold.findall(content)
-                if (result_bold):
-                    for phrase in result_bold:
-                        new_phrase = phrase.replace("**", "<b>", 1)
-                        new_phrase = new_phrase.replace("**", "</b>")
-                        content = content.replace(phrase, new_phrase, 1)
+                # Handling bold and italics in bold
+                content = re.sub(reg_bold, r' <b>\1</b> ', re.sub(reg_italic, r' <i>\1</i> ', content))
 
-                # Handling Headers
+                # Handling links
+                content = re.sub(reg_link, r'<a href="\2">\1</a>', content)
+
+                # Handling Headers and paragraphs
                 if (reg_h1.match(content)):
                     content_title = content[1:]
                     html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=content_title))
                 elif (reg_h2.match(content)):
                     html_p.append("<h2 style='text-align: center; margin-bottom: 15px'>{subtitle}</h2>".format(subtitle=content[2:]))
+                elif (reg_h3.match(content)):
+                    html_p.append("<h3 style='text-align: center; margin-bottom: 15px'>{subtitle}</h3>".format(subtitle=content[3:]))
                 else:
                     # Handle encoding for windows
                     if platform.system() == "Windows":
@@ -133,6 +130,7 @@ class TextFile:
                     # Handle encoding for Mac and other platforms
                     else:
                         html_p.append("<p>{content}</p>".format(content=content.encode('utf8')))
+                        
             processed_content = {
                 "title": content_title,
                 "content": html_p,
