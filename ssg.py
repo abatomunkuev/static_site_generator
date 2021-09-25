@@ -1,6 +1,7 @@
 import argparse
 import os
 import shutil
+import re
 from bs4 import BeautifulSoup
 from io import open
 import platform
@@ -73,25 +74,73 @@ class TextFile:
             Python dictionary containing the processed information: title, number of paragraphs, paragraphs
         """
         contents = self.read_file()
-        # Splitting the content of the file by new line \n\n
-        splitted_content = contents.split("\n\n")
-        html_p = []
-        # handle <h1> title with applied style: text-aligning to the center and margin bottom
-        html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=splitted_content[0]))
-        # handle the rest of the content, wrapping it up in <p> tag
-        for paragraph in splitted_content[1:]:
-            # Handle encoding for windows
-            if platform.system() == "Windows":
-                html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf8').decode('utf8')))
-            # Handle encoding for Mac and other platforms
-            else:
-                html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf8')))
-        processed_content = {
-            "title": splitted_content[0],
-            "content": html_p,
-            "num_paragraphs": len(splitted_content)
-        }
+        if (self.file_path.endswith(".txt")):
+            # Splitting the content of the file by new line \n\n
+            splitted_content = contents.split("\n\n")
+            html_p = []
+            # handle <h1> title with applied style: text-aligning to the center and margin bottom
+            html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=splitted_content[0]))
+            # handle the rest of the content, wrapping it up in <p> tag
+            for paragraph in splitted_content[1:]:
+                # Handle encoding for windows
+                if platform.system() == "Windows":
+                    html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf8').decode('utf8')))
+                # Handle encoding for Mac and other platforms
+                else:
+                    html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf8')))
+            processed_content = {
+                "title": splitted_content[0],
+                "content": html_p,
+                "num_paragraphs": len(splitted_content)
+            }
+        elif (self.file_path.endswith(".md")): 
+            splitted_content = contents.split("\n\n")
+            html_p=[]
+            content_title = ""
+            for content in splitted_content:
+                # regex for .md syntax
+                reg_h1 = re.compile('[^#]*# (.*$)')
+                reg_h2 = '(^[^#])*## ([^#]+)*(.*$)'
+                reg_h3 = '(^[^#])*### ([^#]+)*(.*$)'
+                reg_italic = '[^\*]?\*([^\*]+)\*[^\*]?'
+                reg_bold = '[^\*]?\*{2}([^\*]+)\*{2}[^\*]?'
+                reg_link = '\[(.+)\]\((.+)\)'
+                reg_p = '(^[^#]*$)'
+                reg_newline = '\n'
 
+                # Handling newline
+                content = re.sub(reg_newline, '<br>', content)
+
+                # Handling italics and bold in italics
+                content = re.sub(reg_italic, r' <i>\1</i> ', re.sub(reg_bold, r' <b>\1</b> ', content))
+
+                # Handling bold and italics in bold
+                content = re.sub(reg_bold, r' <b>\1</b> ', re.sub(reg_italic, r' <i>\1</i> ', content))
+
+                # Handling links
+                content = re.sub(reg_link, r'<a href="\2">\1</a>', content)
+
+                # Handling Headers and paragraphs
+                content = re.sub(reg_p, r'<p>\1</p>', content)
+                content = re.sub(reg_h2, r"\1<h2 style='text-align: center; margin-bottom: 15px'>\2</h2>\3", content)
+                content = re.sub(reg_h3, r"\1<h3 style='text-align: center; margin-bottom: 15px'>\2</h3>\3", content)
+
+                if (reg_h1.match(content)):
+                    content_title = content[1:]
+                    html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=content_title))
+                else :
+                    # Handle encoding for windows
+                    if platform.system() == "Windows":
+                        html_p.append("{content}".format(content=content.encode('utf8').decode('utf8')))
+                    # Handle encoding for Mac and other platforms
+                    else:
+                        html_p.append("{content}".format(content=content.encode('utf8')))
+                        
+            processed_content = {
+                "title": content_title,
+                "content": html_p,
+                "num_paragraphs": len(splitted_content)
+            }
         return processed_content
 
     def generate_html(self):
@@ -210,9 +259,9 @@ def determine_path(parsed_args):
     elif (os.path.isdir(path)):
         path_obj['dir_path'] = path
         filenames = []
-        # Read only files which ends with .txt 
+        # Read only files which ends with .txt or .md
         for file in os.listdir(path):
-            if (file.endswith(".txt")):
+            if (file.endswith(".txt") or file.endswith(".md")):
                 filenames.append(file)
         path_obj['file_names'] = filenames
     else:
