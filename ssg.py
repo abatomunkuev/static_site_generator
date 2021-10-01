@@ -103,9 +103,13 @@ class TextFile:
                 reg_p = '(^[^#]*$)'
                 reg_newline = '\n'
                 reg_code = '\`(.*)\`'
+                reg_horizontal_rule = '^---$'
 
                 # Handling newline
                 content = re.sub(reg_newline, '<br>', content)
+
+                # Handling horizontal rule
+                content = re.sub(reg_horizontal_rule, '<hr>',content)
 
                 # Handling italics and bold in italics
                 content = re.sub(reg_italic, r'<i>\1</i>', re.sub(reg_bold, r'<b>\1</b>', content))
