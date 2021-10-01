@@ -19,6 +19,7 @@ pip install beautifulsoup4
 - Bold syntax support for md files. Contents surrounded by Markdown Syntax **\*\*Bold\*\*** will be parsed to html `<b>...</b>` tags.
 - Bold and Italic syntax support for md files. Contents surrounded by Markdown Syntax ***\*\*\*Bold Italcs \*\*\**** will be parsed with both italic and bold html tags.
 - Link syntax support for md files. Contents in Markdown Syntax \[Link\]\(url\) will be parsed to html link tags with working links.
+- \<code> block support for md files. Content surround by Markdown Syntax **\`code content\`** will be parse to html `<code>...</code>`
 - If users specifies a folder for the input, automatically generates an `index.html`, which has relative links to each of the generated files.
 
 ## Usage with shorthand flags
@@ -36,6 +37,42 @@ pip install beautifulsoup4
 | `--help` | `--h` |
 | `--version` | `--v` | 
 | `--stylesheet` | `--s`| 
+
+
+## Markdown 
+### Headers
+```
+# H1 
+## H2
+## H3
+```
+### Links
+```
+[Inline-style link](https://github.com)
+```
+### Bold & Italic
+```
+**bold text**
+
+**italic text**
+
+***bold and italic text***
+```
+
+### Code block
+```
+`var x = y + z`
+```
+
+| Markdown syntax | HTML equivalent |
+| ------------ | -------- |
+|Header 1|`<h1>Test</h1>`| 
+|Header 2| `<h2>Test</h2>`|
+|Header 3| `<h3>Test</h3>`|
+|Bold| `<b>Test</b>`|
+|Italic| `<i>Test</i>`|
+|Link | `<a href='URL'>Test</a>`|
+|Code | `<code>Code</code>`|
 
 # Live version
 
