@@ -19,7 +19,7 @@ pip install beautifulsoup4
 - Bold syntax support for md files. Contents surrounded by Markdown Syntax **\*\*Bold\*\*** will be parsed to html `<b>...</b>` tags.
 - Bold and Italic syntax support for md files. Contents surrounded by Markdown Syntax ***\*\*\*Bold Italcs \*\*\**** will be parsed with both italic and bold html tags.
 - Link syntax support for md files. Contents in Markdown Syntax \[Link\]\(url\) will be parsed to html link tags with working links.
-- \<code> block support for md files. Content surround by Markdown Syntax **\`code content\`** will be parse to html `<code>...</code>`
+- \<code> block support for md files. Content surround by Markdown Syntax **\`code content\`** will be parsed to html `<code>...</code>`
 - If users specifies a folder for the input, automatically generates an `index.html`, which has relative links to each of the generated files.
 
 ## Usage with shorthand flags
