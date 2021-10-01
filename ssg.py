@@ -82,12 +82,7 @@ class TextFile:
             html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=splitted_content[0]))
             # handle the rest of the content, wrapping it up in <p> tag
             for paragraph in splitted_content[1:]:
-                # Handle encoding for windows
-                if platform.system() == "Windows":
-                    html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf8').decode('utf8')))
-                # Handle encoding for Mac and other platforms
-                else:
-                    html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf8')))
+                html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf8').decode('utf8')))
             processed_content = {
                 "title": splitted_content[0],
                 "content": html_p,
@@ -112,29 +107,25 @@ class TextFile:
                 content = re.sub(reg_newline, '<br>', content)
 
                 # Handling italics and bold in italics
-                content = re.sub(reg_italic, r' <i>\1</i> ', re.sub(reg_bold, r' <b>\1</b> ', content))
+                content = re.sub(reg_italic, r'<i>\1</i>', re.sub(reg_bold, r'<b>\1</b>', content))
 
                 # Handling bold and italics in bold
-                content = re.sub(reg_bold, r' <b>\1</b> ', re.sub(reg_italic, r' <i>\1</i> ', content))
-
-                # Handling links
-                content = re.sub(reg_link, r'<a href="\2">\1</a>', content)
+                content = re.sub(reg_bold, r'<b>\1</b>', re.sub(reg_italic, r'<i>\1</i>', content))
 
                 # Handling Headers and paragraphs
                 content = re.sub(reg_p, r'<p>\1</p>', content)
                 content = re.sub(reg_h2, r"\1<h2 style='text-align: center; margin-bottom: 15px'>\2</h2>\3", content)
                 content = re.sub(reg_h3, r"\1<h3 style='text-align: center; margin-bottom: 15px'>\2</h3>\3", content)
 
+                # Handling links
+                content = re.sub(reg_link, r'<a href="\2">\1</a>', content)
+
+
                 if (reg_h1.match(content)):
                     content_title = content[1:]
                     html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=content_title))
                 else :
-                    # Handle encoding for windows
-                    if platform.system() == "Windows":
-                        html_p.append("{content}".format(content=content.encode('utf8').decode('utf8')))
-                    # Handle encoding for Mac and other platforms
-                    else:
-                        html_p.append("{content}".format(content=content.encode('utf8')))
+                    html_p.append("{content}".format(content=content.encode('utf8').decode("utf8")))
                         
             processed_content = {
                 "title": content_title,

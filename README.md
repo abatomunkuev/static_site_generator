@@ -24,10 +24,10 @@ pip install beautifulsoup4
 ## Usage with shorthand flags
 | Description | Command |
 | ------------ | -------- |
-|Generate basic HTML file(s)|`python ssg.py --input "relative path or absolute path to the file or folder"`| 
-|Generate basic HTML file(s) with CSS stylesheet | `python ssg.py --input "relative path or absolute path to the file or folder" --stylesheet "URL to CSS stylesheet"`|
-|Help | `python ssg.py --help` |
-|Get current version | `python ssg.py --version`|
+|Generate basic HTML file(s)|`python3 ssg.py --input "relative path or absolute path to the file or folder"`| 
+|Generate basic HTML file(s) with CSS stylesheet | `python3 ssg.py --input "relative path or absolute path to the file or folder" --stylesheet "URL to CSS stylesheet"`|
+|Help | `python3 ssg.py --help` |
+|Get current version | `python3 ssg.py --version`|
 
 ## Shorthand flags
 | Flag | Shorthand version | 
