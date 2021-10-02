@@ -63,7 +63,7 @@ class TextFile:
 
     def process_file(self):
         """
-        Method process the contents of the file
+        Method process the contents of the txt or markdown file
         Paramerers
         ----------
         self : Object (class File) 
