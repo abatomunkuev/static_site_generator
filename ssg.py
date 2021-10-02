@@ -145,8 +145,9 @@ class TextFile:
             reference to the current instance of the class (TextFile)
         Returns
         -------
-        path : String 
-            path to the generated html file
+        path : Tuple 
+            String: path to the generated html file
+            String: path to the link 
         """
 
         template = """<!doctype html>
