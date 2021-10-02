@@ -107,24 +107,18 @@ class TextFile:
 
                 # Handling newline
                 content = re.sub(reg_newline, '<br>', content)
-
                 # Handling horizontal rule
                 content = re.sub(reg_horizontal_rule, '<hr>',content)
-
                 # Handling italics and bold in italics
                 content = re.sub(reg_italic, r'<i>\1</i>', re.sub(reg_bold, r'<b>\1</b>', content))
-
                 # Handling bold and italics in bold
                 content = re.sub(reg_bold, r'<b>\1</b>', re.sub(reg_italic, r'<i>\1</i>', content))
-
                 # Handling code 
                 content = re.sub(reg_code, r'<code>\1</code>', content)
-
                 # Handling Headers and paragraphs
                 content = re.sub(reg_p, r'<p>\1</p>', content)
                 content = re.sub(reg_h3, r"\1<h3 style='text-align: center; margin-bottom: 15px'>\2</h3>\3", content)
                 content = re.sub(reg_h2, r"\1<h2 style='text-align: center; margin-bottom: 15px'>\2</h2>\3", content)
-
                 # Handling links
                 content = re.sub(reg_link, r'<a href="\2">\1</a>', content)
 
