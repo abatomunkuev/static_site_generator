@@ -5,6 +5,7 @@ import re
 from bs4 import BeautifulSoup
 from io import open
 import platform
+import json
 
 OUTPUT_DIR = "dist"
 
@@ -279,17 +280,44 @@ def cla_parser():
     # Creating argparser object
     # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser
     parser = argparse.ArgumentParser(description="Static Site Generator - is a tool to generate HTML files from raw data like txt files.")
-    parser.add_argument('-i','--input', type=str,required=True,metavar='',help='path to the file or folder that needs to be processed')
+    parser.add_argument('-i','--input', type=str, metavar='',help='path to the file or folder that needs to be processed')
     # --version -v argument
     parser.add_argument("-v", "--version", action="version", version="Static Site Generator 0.1", help="show program's version number and exit")
     # --stylesheet -s argument 
     parser.add_argument("-s", "--stylesheet", metavar='',help="URL stylesheet to be used in generated HTML files")
+    # --config -c argument
+    parser.add_argument("-c", "--config", metavar='', help="Users want to be able to specify all of their SSG options in a JSON formatted configuration file instead of having to pass them all as command line arguments every time")
     # Parse the command line arguments
     args = parser.parse_args()
-    parsed_args = {
-        'input': args.input,
-        'stylesheet': args.stylesheet if args.stylesheet else None
-    }
+    # if argument passed is config
+    if args.config:
+        with open(args.config) as f:
+            try:
+                stored_data = json.load(f)
+                # print(stored_data)
+                if len(stored_data) == 0:
+                        print("JSON file not found:(\n Please update!\n")
+                        exit(1)
+            except:
+                    print("\nError in reading Config File")
+                    exit(1)
+            for value in stored_data:
+                if value == "input" or value == "i":input = stored_data[value]
+                elif value == "stylesheet" or value == "s":stylesheet = stored_data[value]
+                if input == None:
+                    print("No input file specified")
+                    exit(1)
+                    # parsing the arguments from config JSON file
+            parsed_args = {
+                'input': input if input else None,
+                'stylesheet': stylesheet if stylesheet else None,
+                'config': args.config
+            }
+    elif args.input:
+        parsed_args = {
+            'input': args.input,
+            'stylesheet': args.stylesheet if args.stylesheet else None,
+        }
     return parsed_args
 
 

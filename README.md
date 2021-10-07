@@ -28,6 +28,7 @@ pip install beautifulsoup4
 | ------------ | -------- |
 |Generate basic HTML file(s)|`python3 ssg.py --input "relative path or absolute path to the file or folder"`| 
 |Generate basic HTML file(s) with CSS stylesheet | `python3 ssg.py --input "relative path or absolute path to the file or folder" --stylesheet "URL to CSS stylesheet"`|
+|New Feature: Support arguments passed with Config File | `python3 ssg.py -c ./ssg-config.json` |
 |Help | `python3 ssg.py --help` |
 |Get current version | `python3 ssg.py --version`|
 
@@ -38,6 +39,7 @@ pip install beautifulsoup4
 | `--help` | `--h` |
 | `--version` | `--v` | 
 | `--stylesheet` | `--s`| 
+| `--config` | `--c`|
 
 
 ## Markdown 
