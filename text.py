@@ -71,23 +71,21 @@ class TextFile:
             Python dictionary containing the processed information: title, number of paragraphs, paragraphs
         """
         contents = self.read_file()
+        html_content = []
+        # Splitting the content of the file by new line \n\n
+        splitted_content = contents.split("\n\n")
         if (self.file_path.endswith(".txt")):
-            # Splitting the content of the file by new line \n\n
-            splitted_content = contents.split("\n\n")
-            html_p = []
             # handle <h1> title with applied style: text-aligning to the center and margin bottom
-            html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=splitted_content[0]))
+            html_content.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=splitted_content[0]))
             # handle the rest of the content, wrapping it up in <p> tag
             for paragraph in splitted_content[1:]:
-                html_p.append("<p>{content}</p>".format(content=paragraph.encode('utf8').decode('utf8')))
+                html_content.append("<p>{content}</p>".format(content=paragraph.encode('utf8').decode('utf8')))
             processed_content = {
                 "title": splitted_content[0],
-                "content": html_p,
+                "content": html_content,
                 "num_paragraphs": len(splitted_content)
             }
-        elif (self.file_path.endswith(".md")): 
-            splitted_content = contents.split("\n\n")
-            html_p=[]
+        elif (self.file_path.endswith(".md")):
             content_title = ""
             for content in splitted_content:
                 # regex for .md syntax
@@ -122,13 +120,13 @@ class TextFile:
 
                 if (reg_h1.match(content)):
                     content_title = content[1:]
-                    html_p.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=content_title))
+                    html_content.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=content_title))
                 else :
-                    html_p.append("{content}".format(content=content.encode('utf8').decode("utf8")))
+                    html_content.append("{content}".format(content=content.encode('utf8').decode("utf8")))
                         
             processed_content = {
                 "title": content_title,
-                "content": html_p,
+                "content": html_content,
                 "num_paragraphs": len(splitted_content)
             }
         return processed_content

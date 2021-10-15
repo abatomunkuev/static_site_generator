@@ -121,8 +121,10 @@ def cla_parser():
                     print("\nError in reading Config File")
                     exit(1)
             for value in stored_data:
-                if value == "input" or value == "i":input = stored_data[value]
-                elif value == "stylesheet" or value == "s":stylesheet = stored_data[value]
+                if value == "input" or value == "i":
+                    input = stored_data[value]
+                elif value == "stylesheet" or value == "s":
+                    stylesheet = stored_data[value]
                 if input == None:
                     print("No input file specified")
                     exit(1)
