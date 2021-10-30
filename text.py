@@ -136,7 +136,6 @@ class TextFile:
                 "num_paragraphs": len(splitted_content)
             }
             # Processing Markdown Formatter
-            print(frontmatter_content[0])
             # Extracting title field 
             if re.findall(r"title:\s*(.*)",frontmatter_content[0]):
                 processed_content['title'] = re.findall(r"title:\s*(.*)",frontmatter_content[0])[0]
@@ -149,6 +148,7 @@ class TextFile:
             # Extracting author field
             if re.findall(r"author:\s*(.*)",frontmatter_content[0]):
                 processed_content['author'] = re.findall(r"author:\s*(.*)",frontmatter_content[0])[0]
+
         return processed_content
 
     def generate_html(self):
@@ -170,6 +170,7 @@ class TextFile:
         <head>
         <meta charset="utf-8">
         <title>{title}</title>
+        <meta name="description" content={description}>
         <link rel="stylesheet" href={style_sheet}>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
@@ -180,7 +181,10 @@ class TextFile:
         # Determining stylesheet
         stylesheet = self.stylesheet if self.stylesheet else ""
         processed_content = self.process_file()
-        template = template.format(title=processed_content['title'], style_sheet=stylesheet, content="".join(processed_content['content']))
+        description = ""
+        if 'description' in processed_content:
+            description = processed_content['description']
+        template = template.format(title=processed_content['title'], style_sheet=stylesheet, content="".join(processed_content['content']),description=description)
         # Determine the path to the file or directory using (ternary operator)
         # Get the filename from filepath, convert it to lower case
         file_name = "_".join([str.lower(name) for name in self.file_path.split("/")[-1].split(".")[0].split(" ")]) + ".html"
