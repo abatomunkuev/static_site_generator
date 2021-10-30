@@ -146,7 +146,9 @@ class TextFile:
             # Extracting upload date field
             if re.findall(r"upload_date:\s*(.*)",frontmatter_content[0]):
                 processed_content['upload_date'] = re.findall(r"upload_date:\s*(.*)",frontmatter_content[0])[0]
-            
+            # Extracting author field
+            if re.findall(r"author:\s*(.*)",frontmatter_content[0]):
+                processed_content['author'] = re.findall(r"author:\s*(.*)",frontmatter_content[0])[0]
         return processed_content
 
     def generate_html(self):
