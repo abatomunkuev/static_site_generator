@@ -137,6 +137,9 @@ class TextFile:
             }
             # Processing Markdown Formatter
             print(frontmatter_content[0])
+            # Extracting title field 
+            if re.findall(r"title:\s*(.*)",frontmatter_content[0]):
+                processed_content['title'] = re.findall(r"title:\s*(.*)",frontmatter_content[0])[0]
             
         return processed_content
 
