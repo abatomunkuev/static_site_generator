@@ -72,9 +72,9 @@ class TextFile:
         """
         contents = self.read_file()
         html_content = []
-        # Splitting the content of the file by new line \n\n
-        splitted_content = contents.split("\n\n")
         if (self.file_path.endswith(".txt")):
+            # Splitting the content of the file by new line \n\n
+            splitted_content = contents.split("\n\n")
             # handle <h1> title with applied style: text-aligning to the center and margin bottom
             html_content.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=splitted_content[0]))
             # handle the rest of the content, wrapping it up in <p> tag
@@ -87,6 +87,12 @@ class TextFile:
             }
         elif (self.file_path.endswith(".md")):
             content_title = ""
+            # Capturing Frontmatter
+            frontmatter_content = re.findall('^---[\s\S]+?---', contents)
+            # Removing Frontmatter from the content
+            contents = re.sub('^---[\s\S]+?---', "", contents)
+            # Splitting the content of the markdown file by a new line \n\n
+            splitted_content = contents.split("\n\n")
             for content in splitted_content:
                 # regex for .md syntax
                 reg_h1 = re.compile('[^#]*# (.*$)')
@@ -99,7 +105,7 @@ class TextFile:
                 reg_newline = '\n'
                 reg_code = '\`(.*)\`'
                 reg_horizontal_rule = '^---$'
-
+            
                 # Handling newline
                 content = re.sub(reg_newline, '<br>', content)
                 # Handling horizontal rule
@@ -123,12 +129,15 @@ class TextFile:
                     html_content.append("<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(title=content_title))
                 else :
                     html_content.append("{content}".format(content=content.encode('utf8').decode("utf8")))
-                        
+            
             processed_content = {
                 "title": content_title,
                 "content": html_content,
                 "num_paragraphs": len(splitted_content)
             }
+            # Processing Markdown Formatter
+            print(frontmatter_content[0])
+            
         return processed_content
 
     def generate_html(self):
