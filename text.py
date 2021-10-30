@@ -143,6 +143,9 @@ class TextFile:
             # Extracting description field
             if re.findall(r"description:\s*(.*)",frontmatter_content[0]):
                 processed_content['description'] = re.findall(r"description:\s*(.*)",frontmatter_content[0])[0]
+            # Extracting upload date field
+            if re.findall(r"upload_date:\s*(.*)",frontmatter_content[0]):
+                processed_content['upload_date'] = re.findall(r"upload_date:\s*(.*)",frontmatter_content[0])[0]
             
         return processed_content
 
