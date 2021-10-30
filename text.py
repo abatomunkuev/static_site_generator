@@ -140,6 +140,9 @@ class TextFile:
             # Extracting title field 
             if re.findall(r"title:\s*(.*)",frontmatter_content[0]):
                 processed_content['title'] = re.findall(r"title:\s*(.*)",frontmatter_content[0])[0]
+            # Extracting description field
+            if re.findall(r"description:\s*(.*)",frontmatter_content[0]):
+                processed_content['description'] = re.findall(r"description:\s*(.*)",frontmatter_content[0])[0]
             
         return processed_content
 
