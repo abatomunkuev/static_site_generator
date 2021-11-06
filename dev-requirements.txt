@@ -1,0 +1,5 @@
+black==19.10b0
+prospector==1.5.1
+pycodestyle==2.7.0
+flake8==3.9.2
+pre-commit

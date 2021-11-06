@@ -1,16 +1,17 @@
 # Static Site Generator SSG
-Static Site Generator (SSG) - a tool for generating a complete HTML files from raw data like txt and md files. This tool was made with Python language. 
+Static Site Generator (SSG) - a tool for generating a complete HTML files from raw data like txt and md files. This tool was made with Python language.
 
 ## Prerequisites
 - Python3
 - BeautifulSoup4
 
-## Beautiful Soup installation
+## Tool installation
+To install the tool run the following command
 ```
-pip install beautifulsoup4
+pip3 install -r requirements.txt
 ```
 
-## Tool features 
+## Tool features
 - CSS stylesheet support by specifying `--stylesheet` or `s`
 - Title parsing support for txt files. First line, indicates title followed by two blank lines. This will populate the `<title>...</title>` and add `<h1>...</h1>` to the top of the `<body>...</body>`.
 - Title parsing support for md files. Line starting with the Markdown syntax \# indicates the title. This will populate the `<title>...</title>` and add `<h1>...</h1>` to the top of the `<body>...</body>`.
@@ -26,26 +27,26 @@ pip install beautifulsoup4
 ## Usage with shorthand flags
 | Description | Command |
 | ------------ | -------- |
-|Generate basic HTML file(s)|`python3 ssg.py --input "relative path or absolute path to the file or folder"`| 
+|Generate basic HTML file(s)|`python3 ssg.py --input "relative path or absolute path to the file or folder"`|
 |Generate basic HTML file(s) with CSS stylesheet | `python3 ssg.py --input "relative path or absolute path to the file or folder" --stylesheet "URL to CSS stylesheet"`|
 |New Feature: Support arguments passed with Config File | `python3 ssg.py -c ./ssg-config.json` |
 |Help | `python3 ssg.py --help` |
 |Get current version | `python3 ssg.py --version`|
 
 ## Shorthand flags
-| Flag | Shorthand version | 
+| Flag | Shorthand version |
 | -----| ----------------- |
-| `--input` | `--i` | 
+| `--input` | `--i` |
 | `--help` | `--h` |
-| `--version` | `--v` | 
-| `--stylesheet` | `--s`| 
+| `--version` | `--v` |
+| `--stylesheet` | `--s`|
 | `--config` | `--c`|
 
 
-## Markdown 
+## Markdown
 ### Headers
 ```
-# H1 
+# H1
 ## H2
 ## H3
 ```
@@ -67,14 +68,14 @@ pip install beautifulsoup4
 `var x = y + z`
 ```
 
-### Horizontal rule 
+### Horizontal rule
 ```
 ---
 ```
 
 | Markdown syntax | HTML equivalent |
 | ------------ | -------- |
-|Header 1|`<h1>Test</h1>`| 
+|Header 1|`<h1>Test</h1>`|
 |Header 2| `<h2>Test</h2>`|
 |Header 3| `<h3>Test</h3>`|
 |Bold| `<b>Test</b>`|

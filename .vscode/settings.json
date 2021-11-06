@@ -1,0 +1,6 @@
+{
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": ["--line-length", "100"],
+    "editor.formatOnSave": true,
+    "python.linting.flake8Enabled": true
+}
