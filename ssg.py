@@ -3,12 +3,12 @@ This code is a main file
 """
 import os
 import shutil
-from text import TextFile
-from text import OUTPUT_DIR
-from utils import cla_parser, determine_path, generate_index_html
+from ssg import TextFile
+from ssg import OUTPUT_DIR
+from ssg import cla_parser, determine_path, generate_index_html
 
 
-if __name__ == "__main__":
+def main():
     args_obj = cla_parser()
     path = determine_path(args_obj)
     # Create Dir path
@@ -30,3 +30,7 @@ if __name__ == "__main__":
         # Handle single file
         file = TextFile(path["file_path"], path["dir_path"], args_obj["stylesheet"])
         file.generate_html()
+
+
+if __name__ == "__main__":
+    main()

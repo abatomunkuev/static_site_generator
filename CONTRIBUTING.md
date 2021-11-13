@@ -35,3 +35,7 @@ Then, verify that linter pass before submitting a Pull Request by running:
 ```
 flake8 .
 ```
+Verify that unit tests pass before submitting a Pull Request by running:
+```
+pytest tests/
+```

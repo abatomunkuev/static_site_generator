@@ -100,9 +100,9 @@ class TextFile:
         elif self.file_path.endswith(".md"):
             content_title = ""
             # Capturing Frontmatter
-            frontmatter_content = re.findall("^---[\fs\S]+?---", contents)
+            frontmatter_content = re.findall("^---[\s\S]+?---", contents)
             # Removing Frontmatter from the content
-            contents = re.sub("^---[\s\S]+?---", "", contents)
+            contents = re.sub("^---[\s\S]+?---\n", "", contents)
             # Splitting the content of the markdown file by a new line \n\n
             splitted_content = contents.split("\n\n")
             for content in splitted_content:

@@ -3,7 +3,7 @@ import json
 from io import open
 import argparse
 import os
-from text import OUTPUT_DIR
+from ssg.text import OUTPUT_DIR
 
 
 def generate_index_html(stylesheet, links):
