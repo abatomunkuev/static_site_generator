@@ -39,3 +39,8 @@ Verify that unit tests pass before submitting a Pull Request by running:
 ```
 pytest tests/
 ```
+
+You can run all the tests and code-formatting in one-step by running:
+```
+./run_python_tests.sh
+```
