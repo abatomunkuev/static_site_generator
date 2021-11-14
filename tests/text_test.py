@@ -1,5 +1,6 @@
 import os
 import shutil
+import pytest
 from ssg import TextFile, determine_path, OUTPUT_DIR
 
 
@@ -37,3 +38,19 @@ class TestText:
         assert os.path.isfile(
             dir_path + "/test_file.html"
         ), "HTML file should exist in OUTPUT directory"
+
+    def test_process_file_invalid_file(self):
+        parsed_arg_obj = {"input": "./tests/test_files/test_unsupported_type.epub"}
+        path_obj = determine_path(parsed_arg_obj)
+        text_obj = TextFile(path_obj["file_path"], path_obj["dir_path"])
+        # Should throw error
+        with pytest.raises(Exception):
+            text_obj.process_file()
+
+    def test_process_empty_file(self):
+        parsed_arg_obj = {"input": "./tests/test_files/test_empty_file.txt"}
+        path_obj = determine_path(parsed_arg_obj)
+        text_obj = TextFile(path_obj["file_path"], path_obj["dir_path"])
+        # Should throw error
+        with pytest.raises(Exception):
+            text_obj.process_file()

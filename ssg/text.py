@@ -74,120 +74,167 @@ class TextFile:
             - number of paragraphs
             - paragraphs
         """
+        processed_content = {}
         contents = self.read_file()
-        html_content = []
+        if not contents:
+            raise ValueError(
+                f"Empty file - {self.file_path}. No information to process"
+            )
+
         if self.file_path.endswith(".txt"):
-            # Splitting the content of the file by new line \n\n
-            splitted_content = contents.split("\n\n")
-            # handle <h1> title with applied style: text-aligning to the center and margin bottom
+            processed_content = self.process_txt_file(contents)
+        elif self.file_path.endswith(".md"):
+            processed_content = self.process_md_file(contents)
+        else:
+            raise Exception(
+                f"File type - {self.file_path.split('.')[-1]} is not supported!"
+            )
+        return processed_content
+
+    def process_txt_file(self, contents):
+        """
+        Method process the contents of the text (txt) files
+        Parameters
+        ----------
+        self : Object (class File)
+            reference to the current instance of the class (TextFile)
+        contents : String
+            contents of the file
+        Returns
+        -------
+        processed_content : Dictionary
+            Python dictionary containing the processed information:
+            - title
+            - number of paragraphs
+            - paragraphs
+        """
+
+        html_content = []
+        # Splitting the content of the file by new line \n\n
+        splitted_content = contents.split("\n\n")
+        # handle <h1> title with applied style: text-aligning to the center and margin bottom
+        html_content.append(
+            "<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(
+                title=splitted_content[0]
+            )
+        )
+        # handle the rest of the content, wrapping it up in <p> tag
+        for paragraph in splitted_content[1:]:
             html_content.append(
-                "<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(
-                    title=splitted_content[0]
+                "<p>{content}</p>".format(
+                    content=paragraph.encode("utf8").decode("utf8")
                 )
             )
-            # handle the rest of the content, wrapping it up in <p> tag
-            for paragraph in splitted_content[1:]:
+        processed_content = {
+            "title": splitted_content[0],
+            "content": html_content,
+            "num_paragraphs": len(splitted_content),
+        }
+        return processed_content
+
+    def process_md_file(self, contents):
+        """
+        Method process the contents of the markdown files
+        Parameters
+        ----------
+        self : Object (class File)
+            reference to the current instance of the class (TextFile)
+        contents : String
+            contents of the file
+        Returns
+        -------
+        processed_content : Dictionary
+            Python dictionary containing the processed information:
+            - title
+            - number of paragraphs
+            - paragraphs
+        """
+        content_title = ""
+        html_content = []
+        # Capturing Frontmatter
+        frontmatter_content = re.findall("^---[\s\S]+?---", contents)
+        # Removing Frontmatter from the content
+        contents = re.sub("^---[\s\S]+?---\n", "", contents)
+        # Splitting the content of the markdown file by a new line \n\n
+        splitted_content = contents.split("\n\n")
+        for content in splitted_content:
+            # regex for .md syntax
+            reg_h1 = re.compile("[^#]*# (.*$)")
+            reg_h2 = "(^[^#])*## ([^#]+)*(.*$)"
+            reg_h3 = "(^[^#])*### ([^#]+)*(.*$)"
+            reg_italic = "[^\*]?\*([^\*]+)\*[^\*]?"
+            reg_bold = "[^\*]?\*{2}([^\*]+)\*{2}[^\*]?"
+            reg_link = "\[(.+)\]\((.+)\)"
+            reg_p = "(^[^#]*$)"
+            reg_newline = "\n"
+            reg_code = "\`(.*)\`"
+            reg_horizontal_rule = "^---$"
+            # Handling newline
+            content = re.sub(reg_newline, "<br>", content)
+            # Handling horizontal rule
+            content = re.sub(reg_horizontal_rule, "<hr>", content)
+            # Handling italics and bold in italics
+            content = re.sub(
+                reg_italic, r"<i>\1</i>", re.sub(reg_bold, r"<b>\1</b>", content)
+            )
+            # Handling bold and italics in bold
+            content = re.sub(
+                reg_bold, r"<b>\1</b>", re.sub(reg_italic, r"<i>\1</i>", content)
+            )
+            # Handling code
+            content = re.sub(reg_code, r"<code>\1</code>", content)
+            # Handling Headers and paragraphs
+            content = re.sub(reg_p, r"<p>\1</p>", content)
+            content = re.sub(
+                reg_h3,
+                r"\1<h3 style='text-align: center; margin-bottom: 15px'>\2</h3>\3",
+                content,
+            )
+            content = re.sub(
+                reg_h2,
+                r"\1<h2 style='text-align: center; margin-bottom: 15px'>\2</h2>\3",
+                content,
+            )
+            # Handling links
+            content = re.sub(reg_link, r'<a href="\2">\1</a>', content)
+            if reg_h1.match(content):
+                content_title = content[1:]
                 html_content.append(
-                    "<p>{content}</p>".format(
-                        content=paragraph.encode("utf8").decode("utf8")
+                    "<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(
+                        title=content_title
                     )
                 )
-            processed_content = {
-                "title": splitted_content[0],
-                "content": html_content,
-                "num_paragraphs": len(splitted_content),
-            }
-        elif self.file_path.endswith(".md"):
-            content_title = ""
-            # Capturing Frontmatter
-            frontmatter_content = re.findall("^---[\s\S]+?---", contents)
-            # Removing Frontmatter from the content
-            contents = re.sub("^---[\s\S]+?---\n", "", contents)
-            # Splitting the content of the markdown file by a new line \n\n
-            splitted_content = contents.split("\n\n")
-            for content in splitted_content:
-                # regex for .md syntax
-                reg_h1 = re.compile("[^#]*# (.*$)")
-                reg_h2 = "(^[^#])*## ([^#]+)*(.*$)"
-                reg_h3 = "(^[^#])*### ([^#]+)*(.*$)"
-                reg_italic = "[^\*]?\*([^\*]+)\*[^\*]?"
-                reg_bold = "[^\*]?\*{2}([^\*]+)\*{2}[^\*]?"
-                reg_link = "\[(.+)\]\((.+)\)"
-                reg_p = "(^[^#]*$)"
-                reg_newline = "\n"
-                reg_code = "\`(.*)\`"
-                reg_horizontal_rule = "^---$"
-
-                # Handling newline
-                content = re.sub(reg_newline, "<br>", content)
-                # Handling horizontal rule
-                content = re.sub(reg_horizontal_rule, "<hr>", content)
-                # Handling italics and bold in italics
-                content = re.sub(
-                    reg_italic, r"<i>\1</i>", re.sub(reg_bold, r"<b>\1</b>", content)
+            else:
+                html_content.append(
+                    "{content}".format(content=content.encode("utf8").decode("utf8"))
                 )
-                # Handling bold and italics in bold
-                content = re.sub(
-                    reg_bold, r"<b>\1</b>", re.sub(reg_italic, r"<i>\1</i>", content)
-                )
-                # Handling code
-                content = re.sub(reg_code, r"<code>\1</code>", content)
-                # Handling Headers and paragraphs
-                content = re.sub(reg_p, r"<p>\1</p>", content)
-                content = re.sub(
-                    reg_h3,
-                    r"\1<h3 style='text-align: center; margin-bottom: 15px'>\2</h3>\3",
-                    content,
-                )
-                content = re.sub(
-                    reg_h2,
-                    r"\1<h2 style='text-align: center; margin-bottom: 15px'>\2</h2>\3",
-                    content,
-                )
-                # Handling links
-                content = re.sub(reg_link, r'<a href="\2">\1</a>', content)
 
-                if reg_h1.match(content):
-                    content_title = content[1:]
-                    html_content.append(
-                        "<h1 style='text-align: center; margin-bottom: 15px'>{title}</h1>".format(
-                            title=content_title
-                        )
-                    )
-                else:
-                    html_content.append(
-                        "{content}".format(
-                            content=content.encode("utf8").decode("utf8")
-                        )
-                    )
-
-            processed_content = {
-                "title": content_title,
-                "content": html_content,
-                "num_paragraphs": len(splitted_content),
-            }
-            # Processing Markdown Formatter
-            # Extracting title field
-            if re.findall(r"title:\s*(.*)", frontmatter_content[0]):
-                processed_content["title"] = re.findall(
-                    r"title:\s*(.*)", frontmatter_content[0]
-                )[0]
-            # Extracting description field
-            if re.findall(r"description:\s*(.*)", frontmatter_content[0]):
-                processed_content["description"] = re.findall(
-                    r"description:\s*(.*)", frontmatter_content[0]
-                )[0]
-            # Extracting upload date field
-            if re.findall(r"upload_date:\s*(.*)", frontmatter_content[0]):
-                processed_content["upload_date"] = re.findall(
-                    r"upload_date:\s*(.*)", frontmatter_content[0]
-                )[0]
-            # Extracting author field
-            if re.findall(r"author:\s*(.*)", frontmatter_content[0]):
-                processed_content["author"] = re.findall(
-                    r"author:\s*(.*)", frontmatter_content[0]
-                )[0]
-
+        processed_content = {
+            "title": content_title,
+            "content": html_content,
+            "num_paragraphs": len(splitted_content),
+        }
+        # Processing Markdown Formatter
+        # Extracting title field
+        if re.findall(r"title:\s*(.*)", frontmatter_content[0]):
+            processed_content["title"] = re.findall(
+                r"title:\s*(.*)", frontmatter_content[0]
+            )[0]
+        # Extracting description field
+        if re.findall(r"description:\s*(.*)", frontmatter_content[0]):
+            processed_content["description"] = re.findall(
+                r"description:\s*(.*)", frontmatter_content[0]
+            )[0]
+        # Extracting upload date field
+        if re.findall(r"upload_date:\s*(.*)", frontmatter_content[0]):
+            processed_content["upload_date"] = re.findall(
+                r"upload_date:\s*(.*)", frontmatter_content[0]
+            )[0]
+        # Extracting author field
+        if re.findall(r"author:\s*(.*)", frontmatter_content[0]):
+            processed_content["author"] = re.findall(
+                r"author:\s*(.*)", frontmatter_content[0]
+            )[0]
         return processed_content
 
     def generate_html(self):

@@ -12,6 +12,7 @@ class TestUtils:
         """
         parsed_arg_obj = {"input": "./tests/test_files/test_file.md"}
         path_obj = determine_path(parsed_arg_obj)
+        # By default all the attributes of path_obj is set to None
         assert (
             path_obj["file_path"] is not None
         ), "Path object should contain a path to the file"
@@ -38,6 +39,7 @@ class TestUtils:
         """
         parsed_arg_obj = {"input": "./tests/test_files"}
         path_obj = determine_path(parsed_arg_obj)
+        # By default all the attributes of path_obj is set to None
         assert (
             path_obj["file_names"] is not None
         ), "Path object should contain file_names that are in directory"
