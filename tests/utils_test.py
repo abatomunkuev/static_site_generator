@@ -1,6 +1,8 @@
 from ssg import determine_path
 import pytest
 import subprocess
+import os
+import sys
 
 
 class TestUtils:
@@ -75,3 +77,28 @@ class TestUtils:
         # Should throw error
         with pytest.raises(Exception):
             subprocess.check_output("python3 ssg.py -i ../../invalid_path", shell=True)
+
+    def test_html_files_built(self):
+        """
+        Test case to test the existence of generated HTML files
+        This case will use the files from test_files directory.
+        """
+        # Run the tool passing the test_files directory
+        subprocess.run([sys.executable, "ssg.py", "-i", "./tests/test_files/"])
+        test_files = []
+        # Checking if the generated files exists
+        for file in os.listdir("./tests/test_files"):
+            if file.endswith(".txt") or file.endswith(".md"):
+                test_files.append(
+                    "_".join(
+                        [str.lower(name) for name in file.split(".")[0].split(" ")]
+                    )
+                    + ".html"
+                )
+        assert os.path.isdir("./dist"), "dist/ directory should exist"
+        if os.path.isdir("./dist"):
+            # Check if the files above exists in dist directory
+            for html_file in os.listdir("./dist"):
+                assert (
+                    html_file in test_files
+                ), "HTML file should be the same as in the test dir"
