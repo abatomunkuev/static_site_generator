@@ -1,5 +1,5 @@
-# Static Site Generator SSG
-Static Site Generator (SSG) - a tool for generating a complete HTML files from raw data like txt and md files. This tool was made with Python language.
+# Fast Static Site Generator
+Fast Static Site Generator (Fast SSG) - a tool for generating a complete HTML files from raw data like txt and md files. This tool was made with Python language.
 
 ## Prerequisites
 - Python3
@@ -27,11 +27,11 @@ pip3 install -r requirements.txt
 ## Usage with shorthand flags
 | Description | Command |
 | ------------ | -------- |
-|Generate basic HTML file(s)|`python3 ssg.py --input "relative path or absolute path to the file or folder"`|
-|Generate basic HTML file(s) with CSS stylesheet | `python3 ssg.py --input "relative path or absolute path to the file or folder" --stylesheet "URL to CSS stylesheet"`|
-|New Feature: Support arguments passed with Config File | `python3 ssg.py -c ./ssg-config.json` |
-|Help | `python3 ssg.py --help` |
-|Get current version | `python3 ssg.py --version`|
+|Generate basic HTML file(s)|`python3 fast_ssg --input "relative path or absolute path to the file or folder"`|
+|Generate basic HTML file(s) with CSS stylesheet | `python3 fast_ssg --input "relative path or absolute path to the file or folder" --stylesheet "URL to CSS stylesheet"`|
+|New Feature: Support arguments passed with Config File | `python3 fast_ssg -c ./ssg-config.json` |
+|Help | `python3 fast_ssg --help` |
+|Get current version | `python3 fast_ssg --version`|
 
 ## Shorthand flags
 | Flag | Shorthand version |

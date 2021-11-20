@@ -1,7 +1,8 @@
 import os
 import shutil
 import pytest
-from ssg import TextFile, determine_path, OUTPUT_DIR
+from fast_ssg.utils import determine_path
+from fast_ssg.text import OUTPUT_DIR, TextFile
 
 
 class TestText:

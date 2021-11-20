@@ -1,11 +1,7 @@
-"""
-This code is a main file
-"""
 import os
 import shutil
-from ssg import TextFile
-from ssg import OUTPUT_DIR
-from ssg import cla_parser, determine_path, generate_index_html
+from text import OUTPUT_DIR, TextFile
+from utils import cla_parser, determine_path, generate_index_html
 
 
 def main():

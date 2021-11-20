@@ -1,4 +1,4 @@
-# Contributing to Static Site Generator
+# Contributing to Fast Static Site Generator
 
 Welcome to the Contribution Page!  This page provides useful information about contributing to the tool
 

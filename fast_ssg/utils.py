@@ -3,7 +3,7 @@ import json
 from io import open
 import argparse
 import os
-from ssg.text import OUTPUT_DIR
+from text import OUTPUT_DIR
 
 
 def generate_index_html(stylesheet, links):
@@ -105,7 +105,7 @@ def cla_parser():
     # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser
     parser = argparse.ArgumentParser(
         description=(
-            """Static Site Generator - is a tool to generate
+            """Fast Static Site Generator - is a tool to generate
         HTML files from raw data like txt files."""
         )
     )
@@ -121,7 +121,7 @@ def cla_parser():
         "-v",
         "--version",
         action="version",
-        version="Static Site Generator 0.1",
+        version="Fast Static Site Generator 0.1",
         help="show program's version number and exit",
     )
     # --stylesheet -s argument

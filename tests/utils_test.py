@@ -1,6 +1,8 @@
-from ssg import determine_path
 import pytest
 import subprocess
+import os
+import sys
+from fast_ssg.utils import determine_path
 
 
 class TestUtils:
@@ -54,18 +56,20 @@ class TestUtils:
         """
         # Check short-cut -v
         shortcut_version_output = subprocess.check_output(
-            "python3 -c 'from ssg import cla_parser; cla_parser()' -v", shell=True
-        )
-        assert (
-            shortcut_version_output.decode("utf-8") == "Static Site Generator 0.1\n"
-        ), 'Should output "Static Site Generator 0.1"'
-        # Check full argument --version
-        full_version_output = subprocess.check_output(
-            "python3 -c 'from ssg import cla_parser; cla_parser()' --version",
+            "python3 -c 'from fast_ssg.utils import cla_parser; cla_parser()' -v",
             shell=True,
         )
         assert (
-            full_version_output.decode("utf-8") == "Static Site Generator 0.1\n"
+            shortcut_version_output.decode("utf-8")
+            == "Fast Static Site Generator 0.1\n"
+        ), 'Should output "Static Site Generator 0.1"'
+        # Check full argument --version
+        full_version_output = subprocess.check_output(
+            "python3 -c 'from fast_ssg.utils import cla_parser; cla_parser()' --version",
+            shell=True,
+        )
+        assert (
+            full_version_output.decode("utf-8") == "Fast Static Site Generator 0.1\n"
         ), 'Should output "Static Site Generator 0.1"'
 
     def test_cla_parser_invalid_input_arg(self):
@@ -75,3 +79,28 @@ class TestUtils:
         # Should throw error
         with pytest.raises(Exception):
             subprocess.check_output("python3 ssg.py -i ../../invalid_path", shell=True)
+
+    def test_html_files_built(self):
+        """
+        Test case to test the existence of generated HTML files
+        This case will use the files from test_files directory.
+        """
+        # Run the tool passing the test_files directory
+        subprocess.run([sys.executable, "ssg.py", "-i", "./tests/test_files/"])
+        test_files = []
+        # Checking if the generated files exists
+        for file in os.listdir("./tests/test_files"):
+            if file.endswith(".txt") or file.endswith(".md"):
+                test_files.append(
+                    "_".join(
+                        [str.lower(name) for name in file.split(".")[0].split(" ")]
+                    )
+                    + ".html"
+                )
+        assert os.path.isdir("./dist"), "dist/ directory should exist"
+        if os.path.isdir("./dist"):
+            # Check if the files above exists in dist directory
+            for html_file in os.listdir("./dist"):
+                assert (
+                    html_file in test_files
+                ), "HTML file should be the same as in the test dir"
