@@ -61,16 +61,16 @@ class TestUtils:
         )
         assert (
             shortcut_version_output.decode("utf-8")
-            == "Fast Static Site Generator 1.0.0\n"
-        ), 'Should output "Fast Static Site Generator 1.0.0"'
+            == "Fast Static Site Generator 1.0.1\n"
+        ), 'Should output "Fast Static Site Generator 1.0.1"'
         # Check full argument --version
         full_version_output = subprocess.check_output(
             "python3 -c 'from fast_ssg.utils import cla_parser; cla_parser()' --version",
             shell=True,
         )
         assert (
-            full_version_output.decode("utf-8") == "Fast Static Site Generator 1.0.0\n"
-        ), 'Should output "Fast Static Site Generator 1.0.0"'
+            full_version_output.decode("utf-8") == "Fast Static Site Generator 1.0.1\n"
+        ), 'Should output "Fast Static Site Generator 1.0.1"'
 
     def test_cla_parser_invalid_input_arg(self):
         """

@@ -121,7 +121,7 @@ def cla_parser():
         "-v",
         "--version",
         action="version",
-        version="Fast Static Site Generator 1.0.0",
+        version="Fast Static Site Generator 1.0.1",
         help="show program's version number and exit",
     )
     # --stylesheet -s argument

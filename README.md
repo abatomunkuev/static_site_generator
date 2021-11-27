@@ -8,7 +8,7 @@ Fast Static Site Generator (Fast SSG) - a tool for generating a complete HTML fi
 ## Tool installation
 To install the tool run the following command
 ```
-pip install fast-ssg==1.0.0
+pip install fast-ssg==1.0.1
 ```
 
 ## Tool features
@@ -87,4 +87,3 @@ pip install fast-ssg==1.0.0
 # Live version & Project-package website
 
 https://abatomunkuev.github.io/static_site_generator/
-https://pypi.org/project/fast-ssg/1.0.0/
