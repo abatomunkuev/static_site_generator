@@ -8,7 +8,7 @@ Fast Static Site Generator (Fast SSG) - a tool for generating a complete HTML fi
 ## Tool installation
 To install the tool run the following command
 ```
-pip3 install -r requirements.txt
+pip install fast-ssg==1.0.0
 ```
 
 ## Tool features
@@ -27,11 +27,11 @@ pip3 install -r requirements.txt
 ## Usage with shorthand flags
 | Description | Command |
 | ------------ | -------- |
-|Generate basic HTML file(s)|`python3 fast_ssg --input "relative path or absolute path to the file or folder"`|
-|Generate basic HTML file(s) with CSS stylesheet | `python3 fast_ssg --input "relative path or absolute path to the file or folder" --stylesheet "URL to CSS stylesheet"`|
-|New Feature: Support arguments passed with Config File | `python3 fast_ssg -c ./ssg-config.json` |
-|Help | `python3 fast_ssg --help` |
-|Get current version | `python3 fast_ssg --version`|
+|Generate basic HTML file(s)|`fast_ssg --input "relative path or absolute path to the file or folder"`|
+|Generate basic HTML file(s) with CSS stylesheet | `fast_ssg --input "relative path or absolute path to the file or folder" --stylesheet "URL to CSS stylesheet"`|
+|New Feature: Support arguments passed with Config File | `fast_ssg -c ./ssg-config.json` |
+|Help | `fast_ssg --help` |
+|Get current version | `fast_ssg --version`|
 
 ## Shorthand flags
 | Flag | Shorthand version |
@@ -84,6 +84,7 @@ pip3 install -r requirements.txt
 |Code | `<code>Code</code>`|
 |Horizontal rule | `<hr>`|
 
-# Live version
+# Live version & Project-package website
 
 https://abatomunkuev.github.io/static_site_generator/
+https://pypi.org/project/fast-ssg/1.0.0/

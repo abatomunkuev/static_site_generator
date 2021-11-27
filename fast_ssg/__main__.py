@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 import shutil
 from text import OUTPUT_DIR, TextFile
